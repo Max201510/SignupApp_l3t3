@@ -15,10 +15,37 @@ class UsersController < ApplicationController
   end
 
   def index
-    @users = User.all
+    s= params[:search]
+    if (s.nil? )
+      @users = User.all
+    else
+      @users = User.where('name like (?)',"%#{s}%")
+        if (@users.nil?)
+          @users = User.all
+        end
+    end
   end
 
   def show
     @user = User.find(params[:id])
   end
+
+  def edit
+    @user = User.find(params[:id])
+  end
+
+  def update
+    @user = User.find(params[:id])
+    if @user.update_attributes(user_params)
+      redirect_to :action => 'show', :id => @user
+    else
+      render :action => 'edit'
+    end
+  end
+
+  def delete
+    User.find(params[:id]).destroy
+    redirect_to :action => 'index'
+  end
+
 end

@@ -4,11 +4,21 @@
   <p>These are the current users in our system</p>
   <ul id="users">
     <% @users.each do |c| %>
-      <li>| <%=c.name%> | <%=c.email%> |
-        <%= link_to "show", {:action => 'show', :id => c.id} %> |</li>
+      <li> <%=c.name%> | <%=c.email%> |
+        <%= link_to "show", {:action => 'show', :id => c.id} %> |
+        <%= link_to "update", edit_user_path(:id=>c.id) %> | <!-- update the user-->
+        <%= link_to "delete", {:action => 'delete', :id => c.id} %>
+      </li>
     <% end %>
   </ul>
 <% end %>
+<p>
+  <%=form_tag(users_path,method: :get) do%>
+    <%=text_field_tag(:search, params[:search])%>
+    <%=submit_tag("Search")%>
+  <%end%>
+<p>
+
 <p>
   <%= link_to "Add new User", {:action => 'new' }%>
 </p>
